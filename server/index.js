@@ -11,6 +11,7 @@
     app.use(cors({
     origin: [
         'https://rapid-dispatch-beryl.vercel.app',
+        'https://rapid-dispatch-1hltrdyci-an7708s-projects.vercel.app',
         'http://localhost:3000'
     ],
     credentials: true
@@ -20,6 +21,7 @@
     cors: {
         origin: [
         'https://rapid-dispatch-beryl.vercel.app',
+        'https://rapid-dispatch-1hltrdyci-an7708s-projects.vercel.app',
         'http://localhost:3000'
         ],
         methods: ['GET', 'POST'],
