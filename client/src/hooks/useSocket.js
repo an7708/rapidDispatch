@@ -67,20 +67,47 @@
         setTicketLocks(locks);
         });
 
-        socket.on('ticket_locked', ({ ticketId, agentName, agentId, socketId: lockerSocketId }) => {
-        setTicketLocks((prev) => ({
-            ...prev,
-            [ticketId]: { agentName, agentId, socketId: lockerSocketId },
-        }));
-        });
+        socket.on(
+        'ticket_locked',
+        ({ ticketId, agentName, agentId, socketId: lockerSocketId }) => {
+            console.log('RECEIVED LOCK', ticketId);
 
-        socket.on('ticket_unlocked', ({ ticketId }) => {
-        setTicketLocks((prev) => {
-            const updated = { ...prev };
-            delete updated[ticketId];
-            return updated;
-        });
-        });
+            setTicketLocks((prev) => ({
+            ...prev,
+            [ticketId]: {
+                agentName,
+                agentId,
+                socketId: lockerSocketId,
+            },
+            }));
+        }
+        );
+
+    socket.on('lock_rejected', (data) => {
+    console.log('LOCK REJECTED', data);
+
+    alert(`Ticket already locked by ${data.lockedBy}`);
+});
+
+    setTicketLocks((prev) => ({
+        ...prev,
+        [data.ticketId]: {
+        agentName: data.agentName,
+        agentId: data.agentId,
+        socketId: data.socketId,
+        },
+    }));
+    });
+
+        socket.on('ticket_unlocked', (data) => {
+    console.log('RECEIVED ticket_unlocked', data);
+
+    setTicketLocks((prev) => {
+        const updated = { ...prev };
+        delete updated[data.ticketId];
+        return updated;
+    });
+    });
 
         socket.on('new_ticket', (ticket) => {
         setTickets((prev) => [ticket, ...prev]);

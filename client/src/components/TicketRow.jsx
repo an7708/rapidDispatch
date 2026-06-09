@@ -16,6 +16,8 @@
     const isLockedByOther = lock && lock.socketId !== currentSocketId;
     const isLockedByMe = lock && lock.socketId === currentSocketId;
 
+    console.log(ticket._id, lock);
+    
     return (
         <div className={`ticket-row ${isLockedByOther ? 'ticket-row-locked' : ''}`}>
         <div className="ticket-title-col">

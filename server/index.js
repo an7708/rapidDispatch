@@ -52,6 +52,7 @@
 
     io.on('connection', (socket) => {
     console.log(`Agent connected: ${socket.id}`);
+    });
 
     socket.on('join_dashboard', (agentData) => {
         socket.agentName = agentData.name;
@@ -87,12 +88,14 @@
         });
 
         io.emit('ticket_locked', {
-        ticketId,
-        agentName,
-        agentId,
-        socketId: socket.id,
-        });
-    });
+            ticketId,
+            agentName,
+            agentId,
+            socketId: socket.id,
+            });
+            console.log('EMITTED ticket_locked', ticketId);
+
+console.log('EMITTED ticket_locked', ticketId);
 
     socket.on('unlock_ticket', ({ ticketId }) => {
     console.log('UNLOCK EVENT RECEIVED:', ticketId);
@@ -100,6 +103,7 @@
     const lock = ticketLocks.get(ticketId);
         if (lock && lock.socketId === socket.id) {
         ticketLocks.delete(ticketId);
+        console.log('EMITTED ticket_unlocked', ticketId);
         io.emit('ticket_unlocked', { ticketId });
         }
     });

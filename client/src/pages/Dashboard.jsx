@@ -37,17 +37,29 @@ useEffect(() => {
 const handleOpenTicket = (ticket) => {
     const lock = ticketLocks[ticket._id];
 
-    if (lock && lock.socketId !== socketId) return;
+    if (lock && lock.socketId !== socketId) {
+        return;
+    }
 
     lockTicket(ticket._id);
 
-    setTimeout(() => {
-        setEditingTicket(ticket);
-    }, 300);
+    setTicketLocks((prev) => ({
+        ...prev,
+        [ticket._id]: {
+            agentName: agent.name,
+            agentId: agent.id,
+            socketId,
+        },
+    }));
+
+    setEditingTicket(ticket);
 };
 
 const handleCloseTicket = () => {
-    if (editingTicket) unlockTicket(editingTicket._id);
+    console.log('MODAL CLOSED');
+    if (editingTicket) {
+        unlockTicket(editingTicket._id);
+    }
     setEditingTicket(null);
 };
 
