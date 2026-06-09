@@ -123,7 +123,7 @@
         socket.disconnect();
         socketRef.current = null;
         };
-    }, []); 
+        []; 
     
     const lockTicket = useCallback((ticketId) => {
     console.log('LOCKING TICKET:', ticketId);
