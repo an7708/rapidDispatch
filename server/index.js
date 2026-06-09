@@ -1,34 +1,33 @@
     require('dotenv').config();
     const express = require('express');
+    const cors = require('cors');
     const http = require('http');
     const { Server } = require('socket.io');
     const mongoose = require('mongoose');
-    const cors = require('cors');
 
     const app = express();
     const httpServer = http.createServer(app);
 
+    app.use(cors({
+    origin: [
+        'https://rapid-dispatch-beryl.vercel.app',
+        'http://localhost:3000'
+    ],
+    credentials: true
+    }));
+    
     const io = new Server(httpServer, {
     cors: {
         origin: [
-        'http://localhost:3000',
-        process.env.CLIENT_URL,
-        ].filter(Boolean),
+        'https://rapid-dispatch-beryl.vercel.app',
+        'http://localhost:3000'
+        ],
         methods: ['GET', 'POST'],
         credentials: true,
     },
     });
 
     app.set('trust proxy', 1);
-
-    app.use(cors({
-    origin: [
-        'http://localhost:3000',
-        process.env.CLIENT_URL,
-    ].filter(Boolean),
-    credentials: true,
-    }));
-
     app.use(express.json());
 
     mongoose.connect(process.env.MONGODB_URI)
