@@ -63,7 +63,8 @@
     });
 
     socket.on('lock_ticket', ({ ticketId, agentName, agentId }) => {
-        console.log(`LOCK REQUEST: ${ticketId} by ${agentName}`);
+    console.log('LOCK EVENT RECEIVED:', ticketId);
+    console.log(`LOCK REQUEST: ${ticketId} by ${agentName}`);
         if (ticketLocks.has(ticketId)) {
         const existingLock = ticketLocks.get(ticketId);
         if (existingLock.socketId !== socket.id) {
@@ -92,7 +93,9 @@
     });
 
     socket.on('unlock_ticket', ({ ticketId }) => {
-        const lock = ticketLocks.get(ticketId);
+    console.log('UNLOCK EVENT RECEIVED:', ticketId);
+
+    const lock = ticketLocks.get(ticketId);
         if (lock && lock.socketId === socket.id) {
         ticketLocks.delete(ticketId);
         io.emit('ticket_unlocked', { ticketId });

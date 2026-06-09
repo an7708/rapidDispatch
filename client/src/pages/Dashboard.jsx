@@ -36,9 +36,14 @@ useEffect(() => {
 
 const handleOpenTicket = (ticket) => {
     const lock = ticketLocks[ticket._id];
+
     if (lock && lock.socketId !== socketId) return;
+
     lockTicket(ticket._id);
-    setEditingTicket(ticket);
+
+    setTimeout(() => {
+        setEditingTicket(ticket);
+    }, 300);
 };
 
 const handleCloseTicket = () => {

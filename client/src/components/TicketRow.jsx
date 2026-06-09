@@ -31,11 +31,11 @@
         <span className="lock-status">
             {isLockedByOther && (
             <span className="lock-indicator">
-                🔒 Locked by {lock.agentName}
+                Locked by {lock.agentName}
             </span>
             )}
             {isLockedByMe && (
-            <span className="lock-mine">✏️ Editing</span>
+            <span className="lock-mine"> Editing</span>
             )}
             {!lock && <span className="lock-free">Available</span>}
         </span>
@@ -43,7 +43,7 @@
             className={`btn-open ${isLockedByOther ? 'btn-locked' : ''}`}
             onClick={() => onOpen(ticket)}
             disabled={isLockedByOther}>
-            {isLockedByOther ? '🔒 Locked' : 'Open'}
+            {isLockedByOther ? 'Locked' : 'Open'}
         </button>
         </div>
     );

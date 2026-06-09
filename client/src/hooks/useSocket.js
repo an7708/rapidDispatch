@@ -1,7 +1,9 @@
     import { useEffect, useRef, useState, useCallback } from 'react';
     import { io } from 'socket.io-client';
 
-    const SOCKET_URL = process.env.REACT_APP_SOCKET_URL || 'http://localhost:5002';
+    const SOCKET_URL =
+    process.env.REACT_APP_SOCKET_URL ||
+    'https://rapiddispatch.onrender.com';
 
     export function useSocket(agentData) {
     const socketRef = useRef(null);
@@ -33,15 +35,22 @@
         socketRef.current = socket;
 
         socket.on('connect', () => {
-        setConnected(true);
-        setSocketId(socket.id);
-        socket.emit('join_dashboard', {
-            name: agentRef.current.name,
-            id: agentRef.current.id,
-        });
+    console.log('SOCKET CONNECTED:', socket.id);
+
+    setConnected(true);
+    setSocketId(socket.id);
+
+    socket.emit('join_dashboard', {
+        name: agentRef.current.name,
+        id: agentRef.current.id,
+    });
+});
+
+        socket.on('connect_error', (err) => {
+        console.log('SOCKET ERROR:', err.message);
         });
 
-    socket.on('reconnect', () => {
+        socket.on('reconnect', () => {
         setSocketId(socket.id);
         socket.emit('join_dashboard', {
             name: agentRef.current.name,
@@ -88,18 +97,24 @@
         socketRef.current = null;
         };
     }, []); 
+    
     const lockTicket = useCallback((ticketId) => {
-        socketRef.current?.emit('lock_ticket', {
+    console.log('LOCKING TICKET:', ticketId);
+
+    socketRef.current?.emit('lock_ticket', {
         ticketId,
         agentName: agentRef.current.name,
         agentId: agentRef.current.id,
-        });
-    }, []);
+    });
+}, []);
 
     const unlockTicket = useCallback((ticketId) => {
-        socketRef.current?.emit('unlock_ticket', { ticketId });
-    }, []);
+    console.log('UNLOCKING TICKET:', ticketId);
 
+    socketRef.current?.emit('unlock_ticket', {
+        ticketId,
+    });
+}, []);
     return {
         connected,
         ticketLocks,
